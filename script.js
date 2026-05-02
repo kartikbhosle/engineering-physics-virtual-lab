@@ -10,6 +10,9 @@ function switchView(targetViewId) {
     // Show the target view
     document.getElementById(targetViewId).classList.remove('hidden');
 
+    // NEW: Save the current page to the URL without reloading the browser!
+    window.history.pushState(null, null, `#${targetViewId}`);
+
     // Update Navbar Active State
     document.querySelectorAll('.nav-link').forEach(link => {
         if(link.getAttribute('data-target') === targetViewId) {
@@ -22,9 +25,18 @@ function switchView(targetViewId) {
     });
 }
 
-// Initialize the app by showing the Dashboard on load
+// Initialize the app on load
 document.addEventListener('DOMContentLoaded', () => {
-    switchView('view-dashboard');
+    
+    // NEW: Check if the URL has a saved location (e.g., #view-lab-malus)
+    const savedView = window.location.hash.substring(1); // This removes the '#'
+
+    // If there is a saved view in the URL, load it! Otherwise, load the dashboard.
+    if (savedView && document.getElementById(savedView)) {
+        switchView(savedView);
+    } else {
+        switchView('view-dashboard');
+    }
 
     /* ===== DOM Elements for Malus Lab ===== */
     const intensityEl = document.getElementById('intensity');
