@@ -3,225 +3,432 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Virtual Physics Lab — Malus' Law</title>
+  <title>VirtuLab — PESMCOE</title>
   
-  <!-- CDNs for Tailwind, Chart.js, and Fonts -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-  
-  <!-- Link to external CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="min-h-screen text-slate-100 font-[Inter] flex flex-col">
 
-  <!-- Background ambience -->
   <div class="bg-aurora"></div>
 
   <!-- ========================================= -->
-  <!-- 1. GLOBAL NAVIGATION BAR                  -->
+  <!-- GLOBAL NAVIGATION BAR                     -->
   <!-- ========================================= -->
   <nav class="sticky top-0 z-50 glass border-b border-white/10 px-6 py-4">
     <div class="max-w-7xl mx-auto flex justify-between items-center">
       
       <!-- Logo Area -->
-      <div class="flex items-center gap-3 cursor-pointer">
-        <div class="w-8 h-8 rounded bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center font-bold text-slate-900 shadow-lg shadow-cyan-500/20">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="switchView('view-dashboard')">
+        <div class="w-10 h-10 rounded bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center font-bold text-slate-900 shadow-lg shadow-cyan-500/20">
           VL
         </div>
-        <span class="font-bold text-xl tracking-wide text-slate-100">VirtuLab<span class="text-cyan-400 font-light">.edu</span></span>
-      </div>
-
-      <!-- Center Links (Hidden on small screens) -->
-      <div class="hidden md:flex gap-8 text-sm font-medium text-slate-300">
-        <a href="#" class="hover:text-cyan-400 transition">Dashboard</a>
-        <a href="#" class="text-cyan-400 border-b-2 border-cyan-400 pb-1">Experiments</a>
-        <a href="#" class="hover:text-cyan-400 transition">My Classes</a>
-        <a href="#" class="hover:text-cyan-400 transition">Support</a>
-      </div>
-
-      <!-- User Profile Placeholder -->
-      <div class="flex items-center gap-4">
-        <button class="text-slate-400 hover:text-cyan-400 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-        </button>
-        <div class="w-8 h-8 rounded-full bg-slate-700 border border-slate-500 cursor-pointer flex items-center justify-center text-xs font-bold text-slate-300">
-          KB
+        <div class="flex flex-col">
+          <span class="font-bold text-xl tracking-wide text-slate-100 leading-tight">VirtuLab<span class="text-cyan-400 font-light">.edu</span></span>
+          <span class="text-[9px] text-cyan-200/70 uppercase tracking-widest font-semibold">Developed at PESMCOE</span>
         </div>
+      </div>
+
+      <!-- Center Links -->
+      <div class="hidden md:flex gap-8 text-sm font-medium text-slate-300">
+        <button onclick="switchView('view-dashboard')" class="nav-link hover:text-cyan-400 transition" data-target="view-dashboard">Dashboard</button>
+        <button onclick="switchView('view-experiments')" class="nav-link hover:text-cyan-400 transition" data-target="view-experiments">Experiments</button>
+        <button onclick="switchView('view-coming-soon')" class="nav-link hover:text-cyan-400 transition" data-target="view-coming-soon">My Classes</button>
+      </div>
+
+      <!-- Admin Icon -->
+      <div class="flex items-center gap-4">
+        <button onclick="switchView('view-coming-soon')" class="w-9 h-9 rounded-full bg-slate-800 border border-slate-600 flex items-center justify-center text-slate-300 hover:text-cyan-400 hover:border-cyan-400 hover:bg-slate-700 transition shadow-sm" title="Admin Profile">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+        </button>
       </div>
 
     </div>
   </nav>
 
   <!-- ========================================= -->
-  <!-- 2. BREADCRUMBS & PAGE HEADER              -->
+  <!-- MAIN APP CONTAINER                        -->
   <!-- ========================================= -->
-  <div class="max-w-7xl mx-auto px-6 pt-6 w-full text-xs text-slate-500 font-medium">
-    <a href="#" class="hover:text-cyan-400 transition">Home</a> <span class="mx-2">/</span>
-    <a href="#" class="hover:text-cyan-400 transition">Physics Dept</a> <span class="mx-2">/</span>
-    <a href="#" class="hover:text-cyan-400 transition">Optics Module</a> <span class="mx-2">/</span>
-    <span class="text-slate-300">Malus' Law</span>
-  </div>
+  <main class="w-full flex-grow flex flex-col">
 
-  <header class="max-w-7xl mx-auto px-6 pt-6 pb-6 w-full">
-    <div class="flex items-center gap-3">
-      <span class="h-2.5 w-2.5 rounded-full bg-cyan-400 shadow-[0_0_12px_4px_rgba(6,182,212,0.7)]"></span>
-      <p class="uppercase tracking-[0.35em] text-xs text-slate-400">Experiment 04</p>
-    </div>
-    <h1 class="mt-3 text-3xl md:text-4xl font-bold tracking-tight">
-      Verification of <span class="text-cyan-400">Cosine² Law of Malus</span>
-    </h1>
-    <p class="mt-2 text-slate-400 max-w-2xl text-sm md:text-base">
-      Adjust the analyzer angle θ between the polarizer and analyzer. Observe how the transmitted light intensity follows
-      <span class="font-mono text-cyan-200 bg-cyan-900/30 px-1 rounded">I = I<sub>m</sub> cos²θ</span>.
-    </p>
-  </header>
-
-  <!-- ========================================= -->
-  <!-- 3. MAIN APP CONTENT (Your Lab)            -->
-  <!-- ========================================= -->
-  <main class="max-w-7xl mx-auto px-6 pb-16 grid grid-cols-1 lg:grid-cols-2 gap-6 w-full flex-grow">
-
-    <!-- LEFT COLUMN -->
-    <div class="flex flex-col gap-6">
+    <!-- --------------------------------------- -->
+    <!-- VIEW 1: DASHBOARD                       -->
+    <!-- --------------------------------------- -->
+    <div id="view-dashboard" class="page-view hidden">
       
-      <!-- Simulator -->
-      <section class="glass rounded-2xl p-6 md:p-8 flex flex-col">
-        <div class="flex items-center justify-between">
-          <h2 class="text-lg font-semibold tracking-wide">Optical Bench</h2>
-          <span class="text-xs text-slate-400 uppercase tracking-widest flex items-center gap-2">
-            <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span></span>
-            Live
-          </span>
-        </div>
+      <!-- Hero Section -->
+      <div class="max-w-7xl mx-auto px-6 pt-16 pb-12 text-center">
+        <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+          Next-Generation <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Physics Simulations</span>
+        </h1>
+        <p class="text-slate-400 max-w-2xl mx-auto mb-10 text-lg">
+          An interactive, high-fidelity virtual laboratory environment designed for engineering students at PES Modern College of Engineering.
+        </p>
+        <button onclick="switchView('view-experiments')" class="btn-primary text-lg px-8 py-3">View Virtual Labs</button>
+      </div>
 
-        <div class="stage relative mt-6 flex items-center justify-center">
-          <div class="component-box left-2">
-            <div class="lamp"></div><p class="label">Source</p>
-          </div>
-          <div class="beam-track">
-            <div id="beam" class="beam"></div>
-            <div id="lightOrb" class="light-orb"></div>
-            <div class="polarizer" title="Polarizer"><div class="grating"></div><p class="plabel">Polarizer</p></div>
-            <div class="analyzer" title="Analyzer"><div id="analyzerGrating" class="grating analyzer-grating"></div><p class="plabel">Analyzer</p></div>
-          </div>
-          <div class="component-box right-2">
-            <div id="detector" class="detector"></div><p class="label">Detector</p>
-          </div>
+      <!-- Stats Ribbon -->
+      <div class="max-w-7xl mx-auto px-6 pb-12 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+        <div class="glass p-6 rounded-2xl border-t-2 border-cyan-400">
+          <div class="text-3xl font-bold text-slate-100 mb-1">11</div>
+          <div class="text-xs text-slate-400 uppercase tracking-widest">Experiments</div>
         </div>
-
-        <!-- Sliders -->
-        <div class="mt-8 flex flex-col gap-6">
-          <div>
-            <div class="flex items-baseline justify-between mb-3">
-              <label for="intensity" class="text-sm text-slate-300">Max Intensity (I<sub>m</sub>)</label>
-              <span class="font-['JetBrains_Mono'] text-cyan-400 font-bold text-sm" id="intensityLabel">100 μA</span>
-            </div>
-            <input id="intensity" type="range" min="10" max="200" step="10" value="100" class="malus-slider w-full" />
-          </div>
-
-          <div>
-            <div class="flex items-baseline justify-between mb-3">
-              <label for="angle" class="text-sm text-slate-300">Analyzer Angle θ</label>
-              <span class="font-['JetBrains_Mono'] text-cyan-400 font-bold text-sm" id="angleLabel">0°</span>
-            </div>
-            <input id="angle" type="range" min="0" max="90" step="10" value="0" class="malus-slider w-full" />
-            <div class="flex justify-between mt-2 text-[11px] text-slate-500 font-mono">
-              <span>0°</span><span>10°</span><span>20°</span><span>30°</span><span>40°</span>
-              <span>50°</span><span>60°</span><span>70°</span><span>80°</span><span>90°</span>
-            </div>
-          </div>
+        <div class="glass p-6 rounded-2xl border-t-2 border-blue-500">
+          <div class="text-3xl font-bold text-slate-100 mb-1">24/7</div>
+          <div class="text-xs text-slate-400 uppercase tracking-widest">Lab Access</div>
         </div>
-      </section>
-
-      <!-- Table -->
-      <div class="glass rounded-2xl p-6">
-        <div class="flex items-center justify-between mb-3">
-          <h2 class="text-lg font-semibold tracking-wide">Observation Table</h2>
-          <span class="text-xs text-slate-400 bg-white/5 px-2 py-1 rounded" id="rowCount">0 readings</span>
+        <div class="glass p-6 rounded-2xl border-t-2 border-purple-500">
+          <div class="text-3xl font-bold text-slate-100 mb-1">100%</div>
+          <div class="text-xs text-slate-400 uppercase tracking-widest">Safe Environment</div>
         </div>
-        <div class="overflow-x-auto rounded-lg border border-white/5">
-          <table class="w-full text-sm">
-            <thead class="bg-white/5 text-slate-300 uppercase text-xs tracking-wider">
-              <tr>
-                <th class="py-2 px-3 text-left">#</th><th class="py-2 px-3 text-left">θ (°)</th>
-                <th class="py-2 px-3 text-left">cos²θ</th><th class="py-2 px-3 text-left">I (μA)</th>
-              </tr>
-            </thead>
-            <tbody id="dataTable" class="divide-y divide-white/5"></tbody>
-          </table>
+        <div class="glass p-6 rounded-2xl border-t-2 border-emerald-400">
+          <div class="text-3xl font-bold text-slate-100 mb-1">Real-Time</div>
+          <div class="text-xs text-slate-400 uppercase tracking-widest">Data Plotting</div>
         </div>
       </div>
+
+      <!-- Details Section -->
+      <div class="max-w-7xl mx-auto px-6 pb-20 grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <div class="glass p-8 rounded-2xl">
+          <div class="w-12 h-12 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          </div>
+          <h2 class="text-2xl font-bold mb-4">About VirtuLab Platform</h2>
+          <p class="text-slate-400 leading-relaxed mb-6">
+            VirtuLab bridges the gap between theoretical physics and practical application. By simulating complex optical, electrical, and physical phenomena in real-time, students can conduct precise experiments without the constraints of physical lab hours or equipment availability.
+          </p>
+          <ul class="space-y-3 text-sm text-slate-300">
+            <li class="flex items-center gap-3">
+              <span class="text-cyan-400">✓</span> Highly accurate physics engines mapping theoretical equations.
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="text-cyan-400">✓</span> Interactive components replacing fragile physical optics.
+            </li>
+            <li class="flex items-center gap-3">
+              <span class="text-cyan-400">✓</span> Automated data logging and professional graph generation.
+            </li>
+          </ul>
+        </div>
+
+        <div class="glass p-8 rounded-2xl">
+          <div class="w-12 h-12 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+          </div>
+          <h2 class="text-2xl font-bold mb-4">Project & Mentorship</h2>
+          <p class="text-slate-400 leading-relaxed mb-6">
+            Developed as a technical initiative within the Information Technology department at PESMCOE, focusing on interactive ed-tech solutions and modern software architecture.
+          </p>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Mentor Box -->
+            <div class="bg-slate-800/50 p-4 rounded-lg border border-white/5">
+              <p class="text-xs text-blue-400 font-semibold uppercase tracking-wider mb-1">Mentor</p>
+              <p class="text-slate-200 font-semibold">Dr. Prajakta Kanitkar</p>
+              <p class="text-xs text-slate-400 mt-1">Assistant Professor, Physics<br>PES Modern College of Engineering</p>
+            </div>
+            
+            <!-- Developer Box -->
+            <div class="bg-slate-800/50 p-4 rounded-lg border border-white/5">
+              <p class="text-xs text-cyan-400 font-semibold uppercase tracking-wider mb-1">Developer</p>
+              <p class="text-slate-200 font-semibold">Kartik Bhosle</p>
+              <p class="text-xs text-slate-400 mt-1">First-Year IT Engineering<br>PES Modern College of Engineering</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- --------------------------------------- -->
+    <!-- VIEW 2: EXPERIMENTS CATALOG             -->
+    <!-- --------------------------------------- -->
+    <div id="view-experiments" class="page-view hidden">
+      <div class="max-w-7xl mx-auto px-6 pt-12 pb-16">
+        <h1 class="text-3xl font-bold tracking-tight mb-2">Experiments Hub</h1>
+        <p class="text-slate-400 mb-10">Choose a module and start your virtual lab session.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <!-- Experiment 01 -->
+          <div class="glass rounded-2xl p-6 border border-white/5 opacity-60">
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-slate-500/20 text-slate-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Optics</span>
+              <span class="text-slate-500 text-sm font-mono">Exp 01</span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-300 mb-2">Newton's Rings</h3>
+            <p class="text-slate-500 text-sm mb-6 line-clamp-2">Determine the radius of curvature of a plano-convex lens using the phenomenon of Newton's Rings.</p>
+            <button class="w-full bg-slate-800 text-slate-500 py-2 rounded-lg text-sm cursor-not-allowed">Coming Soon</button>
+          </div>
+
+          <!-- Experiment 02 -->
+          <div class="glass rounded-2xl p-6 border border-white/5 opacity-60">
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-slate-500/20 text-slate-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Optics</span>
+              <span class="text-slate-500 text-sm font-mono">Exp 02</span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-300 mb-2">The Spectrometer</h3>
+            <p class="text-slate-500 text-sm mb-6 line-clamp-2">Study the optical spectrometer and determine the least count of the instrument.</p>
+            <button class="w-full bg-slate-800 text-slate-500 py-2 rounded-lg text-sm cursor-not-allowed">Coming Soon</button>
+          </div>
+
+          <!-- Experiment 03 -->
+          <div class="glass rounded-2xl p-6 border border-white/5 opacity-60">
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-slate-500/20 text-slate-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Optics</span>
+              <span class="text-slate-500 text-sm font-mono">Exp 03</span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-300 mb-2">Diffraction Grating</h3>
+            <p class="text-slate-500 text-sm mb-6 line-clamp-2">Determine the wavelength of a given source of light using a diffraction grating.</p>
+            <button class="w-full bg-slate-800 text-slate-500 py-2 rounded-lg text-sm cursor-not-allowed">Coming Soon</button>
+          </div>
+
+          <!-- Experiment 04 (ACTIVE) -->
+          <div class="glass rounded-2xl p-6 border border-cyan-500/30 hover:border-cyan-400 transition group cursor-pointer" onclick="switchView('view-lab-malus')">
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-cyan-500/20 text-cyan-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Polarization</span>
+              <span class="text-cyan-400 text-sm font-mono font-bold">Exp 04</span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-100 mb-2 group-hover:text-cyan-400 transition">Cosine² Law of Malus</h3>
+            <p class="text-slate-400 text-sm mb-6 line-clamp-2">Verify the cosine square law of Malus for plane polarized light using a photovoltaic cell.</p>
+            <button class="w-full btn-primary py-2 text-sm">Launch Lab</button>
+          </div>
+
+          <!-- Experiment 05 -->
+          <div class="glass rounded-2xl p-6 border border-white/5 opacity-60">
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-slate-500/20 text-slate-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Lasers</span>
+              <span class="text-slate-500 text-sm font-mono">Exp 05</span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-300 mb-2">Wire Diameter by LASER</h3>
+            <p class="text-slate-500 text-sm mb-6 line-clamp-2">Determine the diameter of a thin wire using diffraction patterns from a He-Ne LASER.</p>
+            <button class="w-full bg-slate-800 text-slate-500 py-2 rounded-lg text-sm cursor-not-allowed">Coming Soon</button>
+          </div>
+
+          <!-- Experiment 06 -->
+          <div class="glass rounded-2xl p-6 border border-white/5 opacity-60">
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-slate-500/20 text-slate-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Optics</span>
+              <span class="text-slate-500 text-sm font-mono">Exp 06</span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-300 mb-2">Double Refracting Crystals</h3>
+            <p class="text-slate-500 text-sm mb-6 line-clamp-2">Determine principal refractive indices of double refracting crystals.</p>
+            <button class="w-full bg-slate-800 text-slate-500 py-2 rounded-lg text-sm cursor-not-allowed">Coming Soon</button>
+          </div>
+
+          <!-- Experiment 07 -->
+          <div class="glass rounded-2xl p-6 border border-white/5 opacity-60">
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-slate-500/20 text-slate-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Semiconductors</span>
+              <span class="text-slate-500 text-sm font-mono">Exp 07</span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-300 mb-2">Semiconductor Band Gap</h3>
+            <p class="text-slate-500 text-sm mb-6 line-clamp-2">Determine the band gap of a given semiconductor using a reverse-biased P-N junction diode.</p>
+            <button class="w-full bg-slate-800 text-slate-500 py-2 rounded-lg text-sm cursor-not-allowed">Coming Soon</button>
+          </div>
+
+          <!-- Experiment 08 -->
+          <div class="glass rounded-2xl p-6 border border-white/5 opacity-60">
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-slate-500/20 text-slate-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Semiconductors</span>
+              <span class="text-slate-500 text-sm font-mono">Exp 08</span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-300 mb-2">Solar Cell Characteristics</h3>
+            <p class="text-slate-500 text-sm mb-6 line-clamp-2">Study I-V characteristics and determine the fill factor of a given Solar-cell.</p>
+            <button class="w-full bg-slate-800 text-slate-500 py-2 rounded-lg text-sm cursor-not-allowed">Coming Soon</button>
+          </div>
+
+          <!-- Experiment 09 -->
+          <div class="glass rounded-2xl p-6 border border-white/5 opacity-60">
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-slate-500/20 text-slate-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Electromagnetism</span>
+              <span class="text-slate-500 text-sm font-mono">Exp 09</span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-300 mb-2">Hall Effect</h3>
+            <p class="text-slate-500 text-sm mb-6 line-clamp-2">Determine the Hall coefficient and charge carrier density of a semiconductor material.</p>
+            <button class="w-full bg-slate-800 text-slate-500 py-2 rounded-lg text-sm cursor-not-allowed">Coming Soon</button>
+          </div>
+
+          <!-- Experiment 10 -->
+          <div class="glass rounded-2xl p-6 border border-white/5 opacity-60">
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-slate-500/20 text-slate-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Lasers</span>
+              <span class="text-slate-500 text-sm font-mono">Exp 10</span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-300 mb-2">LASER Beam Divergence</h3>
+            <p class="text-slate-500 text-sm mb-6 line-clamp-2">Calculate the beam divergence of a given He-Ne LASER.</p>
+            <button class="w-full bg-slate-800 text-slate-500 py-2 rounded-lg text-sm cursor-not-allowed">Coming Soon</button>
+          </div>
+
+          <!-- Experiment 11 -->
+          <div class="glass rounded-2xl p-6 border border-white/5 opacity-60">
+            <div class="flex justify-between items-start mb-4">
+              <span class="bg-slate-500/20 text-slate-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Modern Physics</span>
+              <span class="text-slate-500 text-sm font-mono">Exp 11</span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-300 mb-2">Planck's Constant</h3>
+            <p class="text-slate-500 text-sm mb-6 line-clamp-2">Content beyond syllabus: Determine the value of Planck's constant using Light Emitting Diodes (LEDs).</p>
+            <button class="w-full bg-slate-800 text-slate-500 py-2 rounded-lg text-sm cursor-not-allowed">Coming Soon</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- --------------------------------------- -->
+    <!-- VIEW 3: MALUS LAW LAB                   -->
+    <!-- --------------------------------------- -->
+    <div id="view-lab-malus" class="page-view hidden">
       
-    </div>
-
-    <!-- RIGHT COLUMN -->
-    <div class="flex flex-col gap-6">
-
-      <div class="glass rounded-2xl p-6">
-        <h2 class="text-lg font-semibold tracking-wide mb-4">Digital Readout</h2>
-        <div class="grid grid-cols-3 gap-4">
-          <div class="meter"><p class="meter-label">Angle θ</p><p class="meter-value" id="meterAngle">0°</p></div>
-          <div class="meter"><p class="meter-label">cos²θ</p><p class="meter-value" id="meterCos">1.000</p></div>
-          <div class="meter"><p class="meter-label">Current I</p><p class="meter-value"><span id="meterCurrent">100.00</span><span class="unit">μA</span></p></div>
-        </div>
-        <div class="mt-5 flex flex-wrap gap-3">
-          <button id="recordBtn" class="btn-primary flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
-            Record Reading
-          </button>
-          <button id="resetBtn" class="btn-ghost flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-            Reset Data
-          </button>
-        </div>
+      <!-- Breadcrumbs -->
+      <div class="max-w-7xl mx-auto px-6 pt-6 w-full text-xs text-slate-500 font-medium">
+        <button onclick="switchView('view-experiments')" class="hover:text-cyan-400 transition">Experiments</button> <span class="mx-2">/</span>
+        <span class="text-slate-300">Malus' Law</span>
       </div>
 
-      <div class="glass rounded-2xl p-6 flex-grow flex flex-col">
-        <h2 class="text-lg font-semibold tracking-wide mb-3">I vs cos²θ</h2>
-        <div class="relative flex-grow min-h-[300px]">
-          <canvas id="malusChart"></canvas>
+      <header class="max-w-7xl mx-auto px-6 pt-4 pb-6 w-full">
+        <div class="flex items-center gap-3">
+          <span class="h-2.5 w-2.5 rounded-full bg-cyan-400 shadow-[0_0_12px_4px_rgba(6,182,212,0.7)]"></span>
+          <p class="uppercase tracking-[0.35em] text-xs text-slate-400">Experiment 04</p>
+        </div>
+        <h1 class="mt-3 text-3xl md:text-4xl font-bold tracking-tight">
+          Verification of <span class="text-cyan-400">Cosine² Law of Malus</span>
+        </h1>
+        <p class="mt-2 text-slate-400 max-w-2xl text-sm md:text-base">
+          Adjust the analyzer angle θ between the polarizer and analyzer. Observe how the transmitted light intensity follows
+          <span class="font-mono text-cyan-200 bg-cyan-900/30 px-1 rounded">I = I<sub>m</sub> cos²θ</span>.
+        </p>
+      </header>
+
+      <div class="max-w-7xl mx-auto px-6 pb-16 grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+        <!-- LEFT COLUMN -->
+        <div class="flex flex-col gap-6">
+          <!-- Simulator -->
+          <section class="glass rounded-2xl p-6 md:p-8 flex flex-col">
+            <div class="flex items-center justify-between">
+              <h2 class="text-lg font-semibold tracking-wide">Optical Bench</h2>
+              <span class="text-xs text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span></span>
+                Live
+              </span>
+            </div>
+
+            <div class="stage relative mt-6 flex items-center justify-center">
+              <div class="component-box left-2"><div class="lamp"></div><p class="label">Source</p></div>
+              <div class="beam-track">
+                <div id="beam" class="beam"></div><div id="lightOrb" class="light-orb"></div>
+                <div class="polarizer" title="Polarizer"><div class="grating"></div><p class="plabel">Polarizer</p></div>
+                <div class="analyzer" title="Analyzer"><div id="analyzerGrating" class="grating analyzer-grating"></div><p class="plabel">Analyzer</p></div>
+              </div>
+              <div class="component-box right-2"><div id="detector" class="detector"></div><p class="label">Detector</p></div>
+            </div>
+
+            <!-- Sliders -->
+            <div class="mt-8 flex flex-col gap-6">
+              <div>
+                <div class="flex items-baseline justify-between mb-3">
+                  <label for="intensity" class="text-sm text-slate-300">Max Intensity (I<sub>m</sub>)</label>
+                  <span class="font-['JetBrains_Mono'] text-cyan-400 font-bold text-sm" id="intensityLabel">100 μA</span>
+                </div>
+                <input id="intensity" type="range" min="10" max="200" step="10" value="100" class="malus-slider w-full" />
+              </div>
+              <div>
+                <div class="flex items-baseline justify-between mb-3">
+                  <label for="angle" class="text-sm text-slate-300">Analyzer Angle θ</label>
+                  <span class="font-['JetBrains_Mono'] text-cyan-400 font-bold text-sm" id="angleLabel">0°</span>
+                </div>
+                <input id="angle" type="range" min="0" max="90" step="10" value="0" class="malus-slider w-full" />
+                <div class="flex justify-between mt-2 text-[11px] text-slate-500 font-mono">
+                  <span>0°</span><span>10°</span><span>20°</span><span>30°</span><span>40°</span>
+                  <span>50°</span><span>60°</span><span>70°</span><span>80°</span><span>90°</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Table -->
+          <div class="glass rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-3">
+              <h2 class="text-lg font-semibold tracking-wide">Observation Table</h2>
+              <span class="text-xs text-slate-400 bg-white/5 px-2 py-1 rounded" id="rowCount">0 readings</span>
+            </div>
+            <div class="overflow-x-auto rounded-lg border border-white/5">
+              <table class="w-full text-sm">
+                <thead class="bg-white/5 text-slate-300 uppercase text-xs tracking-wider">
+                  <tr>
+                    <th class="py-2 px-3 text-left">#</th><th class="py-2 px-3 text-left">θ (°)</th>
+                    <th class="py-2 px-3 text-left">cos²θ</th><th class="py-2 px-3 text-left">I (μA)</th>
+                  </tr>
+                </thead>
+                <tbody id="dataTable" class="divide-y divide-white/5"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="flex flex-col gap-6">
+          <div class="glass rounded-2xl p-6">
+            <h2 class="text-lg font-semibold tracking-wide mb-4">Digital Readout</h2>
+            <div class="grid grid-cols-3 gap-4">
+              <div class="meter"><p class="meter-label">Angle θ</p><p class="meter-value" id="meterAngle">0°</p></div>
+              <div class="meter"><p class="meter-label">cos²θ</p><p class="meter-value" id="meterCos">1.000</p></div>
+              <div class="meter"><p class="meter-label">Current I</p><p class="meter-value"><span id="meterCurrent">100.00</span><span class="unit">μA</span></p></div>
+            </div>
+            <div class="mt-5 flex flex-wrap gap-3">
+              <button id="recordBtn" class="btn-primary flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                Record Reading
+              </button>
+              <button id="resetBtn" class="btn-ghost flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                Reset Data
+              </button>
+            </div>
+          </div>
+
+          <div class="glass rounded-2xl p-6 flex-grow flex flex-col">
+            <h2 class="text-lg font-semibold tracking-wide mb-3">I vs cos²θ</h2>
+            <div class="relative flex-grow min-h-[300px]">
+              <canvas id="malusChart"></canvas>
+            </div>
+          </div>
         </div>
       </div>
-
     </div>
+
+    <!-- --------------------------------------- -->
+    <!-- VIEW 4: COMING SOON                     -->
+    <!-- --------------------------------------- -->
+    <div id="view-coming-soon" class="page-view hidden flex-grow flex items-center justify-center p-6">
+      <div class="text-center glass p-12 rounded-3xl max-w-lg w-full border border-cyan-500/20 shadow-2xl">
+        <div class="w-20 h-20 bg-cyan-900/30 text-cyan-400 rounded-full flex items-center justify-center mx-auto mb-6 border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+        </div>
+        <h2 class="text-3xl font-bold mb-4 text-slate-100">Under Construction</h2>
+        <p class="text-slate-400 mb-8 leading-relaxed">
+          We are working hard to bring this feature to you soon! Stay tuned for upcoming updates to the VirtuLab platform.
+        </p>
+        <button onclick="switchView('view-dashboard')" class="btn-ghost border-cyan-500/30 text-cyan-400 hover:bg-cyan-900/20">Return to Dashboard</button>
+      </div>
+    </div>
+
   </main>
 
   <!-- ========================================= -->
-  <!-- 4. APP FOOTER                             -->
+  <!-- APP FOOTER                                -->
   <!-- ========================================= -->
   <footer class="glass border-t border-white/10 mt-auto">
-    <div class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-slate-400">
-      <div>
-        <div class="flex items-center gap-2 mb-4">
-          <div class="w-6 h-6 rounded bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center font-bold text-slate-900 text-xs">VL</div>
-          <span class="font-bold text-slate-100">VirtuLab<span class="text-cyan-400">.edu</span></span>
-        </div>
-        <p>Providing high-fidelity virtual physics environments for engineering students worldwide.</p>
+    <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500">
+      <div class="flex items-center gap-2 mb-4 md:mb-0">
+        <span class="font-bold text-slate-300">VirtuLab<span class="text-cyan-400">.edu</span></span>
+        <span>— Developed at PES Modern College of Engineering</span>
       </div>
-      <div>
-        <h3 class="font-semibold text-slate-200 mb-4 uppercase tracking-wider text-xs">Resources</h3>
-        <ul class="space-y-2">
-          <li><a href="#" class="hover:text-cyan-400 transition">Lab Manual PDF</a></li>
-          <li><a href="#" class="hover:text-cyan-400 transition">Theory & Formulas</a></li>
-          <li><a href="#" class="hover:text-cyan-400 transition">Report an Issue</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="font-semibold text-slate-200 mb-4 uppercase tracking-wider text-xs">Experiment Details</h3>
-        <ul class="space-y-2">
-          <li><strong>Module:</strong> Optics & Photonics</li>
-          <li><strong>Course:</strong> Physics 101</li>
-          <li><strong>Environment:</strong> Dark Room Simulation</li>
-        </ul>
-      </div>
-    </div>
-    <div class="border-t border-white/5 py-4 text-center text-xs text-slate-500">
-      &copy; 2026 VirtuLab Education Systems. All rights reserved. | Developed at PES MCOE Pune. 
+      <div>&copy; 2026 VirtuLab Education Systems.</div>
     </div>
   </footer>
 
-  <!-- Link to external JS -->
   <script src="script.js"></script>
 </body>
 </html>

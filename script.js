@@ -1,4 +1,32 @@
+// ==========================================
+// SPA ROUTING (Page Navigation)
+// ==========================================
+function switchView(targetViewId) {
+    // Hide all views
+    document.querySelectorAll('.page-view').forEach(view => {
+        view.classList.add('hidden');
+    });
+    
+    // Show the target view
+    document.getElementById(targetViewId).classList.remove('hidden');
+
+    // Update Navbar Active State
+    document.querySelectorAll('.nav-link').forEach(link => {
+        if(link.getAttribute('data-target') === targetViewId) {
+            link.classList.add('text-cyan-400', 'border-b-2', 'border-cyan-400', 'pb-1');
+            link.classList.remove('text-slate-300');
+        } else {
+            link.classList.remove('text-cyan-400', 'border-b-2', 'border-cyan-400', 'pb-1');
+            link.classList.add('text-slate-300');
+        }
+    });
+}
+
+// Initialize the app by showing the Dashboard on load
 document.addEventListener('DOMContentLoaded', () => {
+    switchView('view-dashboard');
+
+    /* ===== DOM Elements for Malus Lab ===== */
     const intensityEl = document.getElementById('intensity');
     const intensityLabel = document.getElementById('intensityLabel');
     const angleEl     = document.getElementById('angle');
