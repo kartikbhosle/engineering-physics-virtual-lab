@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Virtual Physics Lab — Malus' Law</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body class="min-h-screen text-slate-100 font-[Inter]">
+
+  <!-- Background ambience -->
+  <div class="bg-aurora"></div>
+
+  <header class="max-w-7xl mx-auto px-6 pt-10 pb-6">
+    <div class="flex items-center gap-3">
+      <span class="h-2.5 w-2.5 rounded-full bg-amber-300 shadow-[0_0_12px_4px_rgba(252,211,77,0.7)]"></span>
+      <p class="uppercase tracking-[0.35em] text-xs text-slate-400">Virtual Physics Lab</p>
+    </div>
+    <h1 class="mt-3 text-3xl md:text-4xl font-bold tracking-tight">
+      Verification of <span class="text-amber-300">Cosine² Law of Malus</span>
+    </h1>
+    <p class="mt-2 text-slate-400 max-w-2xl text-sm md:text-base">
+      Adjust the analyzer angle θ between the polarizer and analyzer. Observe how the transmitted light intensity follows
+      <span class="font-mono text-amber-200">I = I<sub>m</sub> cos²θ</span>.
+    </p>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 pb-16 grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+    <!-- LEFT: Simulator -->
+    <section class="glass rounded-2xl p-6 md:p-8 flex flex-col">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-semibold tracking-wide">Optical Bench</h2>
+        <span class="text-xs text-slate-400 uppercase tracking-widest">Live Simulation</span>
+      </div>
+
+      <!-- Light beam stage -->
+      <div class="stage relative mt-6 flex items-center justify-center">
+        <!-- Source -->
+        <div class="component-box left-2">
+          <div class="lamp"></div>
+          <p class="label">Source</p>
+        </div>
+
+        <!-- Beam -->
+        <div class="beam-track">
+          <div id="beam" class="beam"></div>
+          <div id="lightOrb" class="light-orb"></div>
+          <!-- Polarizer -->
+          <div class="polarizer" title="Polarizer">
+            <div class="grating"></div>
+            <p class="plabel">Polarizer</p>
+          </div>
+          <!-- Analyzer -->
+          <div class="analyzer" title="Analyzer">
+            <div id="analyzerGrating" class="grating analyzer-grating"></div>
+            <p class="plabel">Analyzer</p>
+          </div>
+        </div>
+
+        <!-- Detector -->
+        <div class="component-box right-2">
+          <div id="detector" class="detector"></div>
+          <p class="label">Detector</p>
+        </div>
+      </div>
+
+      <!-- Slider -->
+      <div class="mt-8">
+        <div class="flex items-baseline justify-between mb-3">
+          <label for="angle" class="text-sm text-slate-300">Analyzer Angle θ</label>
+          <span class="font-[Orbitron] text-amber-300 text-sm" id="angleLabel">0°</span>
+        </div>
+        <input id="angle" type="range" min="0" max="90" step="10" value="0" class="malus-slider w-full" />
+        <div class="flex justify-between mt-2 text-[11px] text-slate-500 font-mono">
+          <span>0°</span><span>10°</span><span>20°</span><span>30°</span><span>40°</span>
+          <span>50°</span><span>60°</span><span>70°</span><span>80°</span><span>90°</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: Data + graph -->
+    <section class="flex flex-col gap-6">
+
+      <!-- Digital meters -->
+      <div class="glass rounded-2xl p-6">
+        <h2 class="text-lg font-semibold tracking-wide mb-4">Digital Readout</h2>
+        <div class="grid grid-cols-3 gap-4">
+          <div class="meter">
+            <p class="meter-label">Angle θ</p>
+            <p class="meter-value" id="meterAngle">0°</p>
+          </div>
+          <div class="meter">
+            <p class="meter-label">cos²θ</p>
+            <p class="meter-value" id="meterCos">1.000</p>
+          </div>
+          <div class="meter">
+            <p class="meter-label">Current I</p>
+            <p class="meter-value"><span id="meterCurrent">100.00</span><span class="unit">μA</span></p>
+          </div>
+        </div>
+
+        <div class="mt-5 flex flex-wrap gap-3">
+          <button id="recordBtn" class="btn-primary">⏺ Record Reading</button>
+          <button id="resetBtn" class="btn-ghost">Reset Data</button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="glass rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-lg font-semibold tracking-wide">Observation Table</h2>
+          <span class="text-xs text-slate-400" id="rowCount">0 readings</span>
+        </div>
+        <div class="overflow-x-auto rounded-lg border border-white/5">
+          <table class="w-full text-sm">
+            <thead class="bg-white/5 text-slate-300 uppercase text-xs tracking-wider">
+              <tr>
+                <th class="py-2 px-3 text-left">#</th>
+                <th class="py-2 px-3 text-left">θ (°)</th>
+                <th class="py-2 px-3 text-left">cos²θ</th>
+                <th class="py-2 px-3 text-left">I (μA)</th>
+              </tr>
+            </thead>
+            <tbody id="dataTable" class="divide-y divide-white/5"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="glass rounded-2xl p-6">
+        <h2 class="text-lg font-semibold tracking-wide mb-3">I vs cos²θ</h2>
+        <div class="relative h-72">
+          <canvas id="malusChart"></canvas>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="text-center text-xs text-slate-500 pb-8">
+    Designed for dark-room experimentation · I<sub>m</sub> = 100 μA
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
