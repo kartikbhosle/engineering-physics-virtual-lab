@@ -1,10 +1,9 @@
+/* ===== Professional CSS ===== */
 :root {
-  /* Deep slate professional background */
   --bg-0: #0f172a; 
   --bg-1: #020617; 
   --glass-bg: rgba(30, 41, 59, 0.4);
   --glass-border: rgba(255, 255, 255, 0.08);
-  /* Scientific Cyan for the laser and UI accents */
   --laser: #06b6d4; 
   --laser-glow: rgba(6, 182, 212, 0.5);
   --text-main: #f8fafc;
@@ -20,7 +19,6 @@ html, body {
   background-attachment: fixed;
 }
 
-/* Subtle, professional deep-blue aurora */
 .bg-aurora {
   position: fixed; inset: 0;
   pointer-events: none;
@@ -30,7 +28,6 @@ html, body {
   z-index: -1;
 }
 
-/* ===== Glassmorphism ===== */
 .glass {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
@@ -39,7 +36,6 @@ html, body {
   box-shadow: 0 10px 40px -20px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.03);
 }
 
-/* ===== Optical bench ===== */
 .stage {
   height: 240px;
   background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.4));
@@ -65,7 +61,6 @@ html, body {
   width: 38px; height: 50px; border-radius: 6px;
   background: linear-gradient(180deg, #1e293b, #0f172a);
   border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: inset 0 0 12px rgba(6, 182, 212, 0.0);
   transition: box-shadow 0.4s ease, background 0.4s ease;
 }
 
@@ -77,29 +72,25 @@ html, body {
   padding: 0 60px;
 }
 
-/* The continuous laser beam */
 .beam {
   position: absolute; left: 8%; right: 8%; top: 50%;
   height: 12px; transform: translateY(-50%);
-  background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(6, 182, 212, 0.8) 15%,
-    var(--laser) 50%,
-    rgba(6, 182, 212, 0.8) 85%,
-    transparent 100%);
-  filter: blur(2px);
-  border-radius: 999px;
-  opacity: 1;
-  transition: opacity 0.5s ease, filter 0.5s ease;
+  background: linear-gradient(90deg, transparent 0%, rgba(6, 182, 212, 0.8) 15%, var(--laser) 50%, rgba(6, 182, 212, 0.8) 85%, transparent 100%);
+  filter: blur(2px); border-radius: 999px; transition: opacity 0.5s ease;
+}
+
+.light-orb {
+  position: absolute; top: 50%; left: 50%;
+  width: 26px; height: 26px; border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, #cffafe 0%, #06b6d4 50%, transparent 75%);
+  transition: opacity 0.5s ease, box-shadow 0.5s ease;
 }
 
 .polarizer, .analyzer {
-  position: relative; z-index: 2;
-  width: 60px; height: 130px;
-  border-radius: 8px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-  border: 1px solid rgba(255,255,255,0.15);
-  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 2; width: 60px; height: 130px;
+  border-radius: 8px; background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center;
   box-shadow: 0 8px 24px rgba(0,0,0,0.5);
 }
 .plabel {
@@ -108,79 +99,46 @@ html, body {
 }
 .grating {
   width: 80%; height: 80%; border-radius: 4px;
-  background-image: repeating-linear-gradient(
-    0deg,
-    rgba(6, 182, 212, 0.7) 0 2px,
-    transparent 2px 6px
-  );
+  background-image: repeating-linear-gradient(0deg, rgba(6, 182, 212, 0.7) 0 2px, transparent 2px 6px);
   opacity: 0.85;
 }
-.analyzer-grating {
-  transition: transform 0.5s cubic-bezier(.2,.7,.2,1);
-  transform-origin: center;
-}
+.analyzer-grating { transition: transform 0.5s cubic-bezier(.2,.7,.2,1); }
 
-/* ===== Slider ===== */
 .malus-slider {
-  -webkit-appearance: none; appearance: none;
-  height: 6px; border-radius: 999px;
-  background: linear-gradient(90deg, var(--laser), #3b82f6);
-  outline: none;
+  -webkit-appearance: none; appearance: none; height: 6px; border-radius: 999px;
+  background: linear-gradient(90deg, var(--laser), #3b82f6); outline: none; cursor: pointer;
 }
 .malus-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; appearance: none;
-  width: 20px; height: 20px; border-radius: 50%;
-  background: #0f172a;
-  border: 2px solid var(--laser);
+  -webkit-appearance: none; appearance: none; width: 20px; height: 20px; border-radius: 50%;
+  background: #0f172a; border: 2px solid var(--laser);
   box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15), 0 0 14px var(--laser-glow);
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  transition: transform 0.15s ease;
 }
 .malus-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
 
-/* ===== Meters ===== */
 .meter {
-  border: 1px solid rgba(255,255,255,0.08);
-  background: linear-gradient(180deg, rgba(0,0,0,0.5), rgba(0,0,0,0.2));
-  border-radius: 12px; padding: 14px;
-  box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.03);
+  border: 1px solid rgba(255,255,255,0.08); background: linear-gradient(180deg, rgba(0,0,0,0.5), rgba(0,0,0,0.2));
+  border-radius: 12px; padding: 14px; box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.03);
 }
-.meter-label {
-  font-size: 10px; letter-spacing: 0.15em; color: var(--text-muted); text-transform: uppercase; font-weight: 500;
-}
-.meter-value {
-  font-family: 'JetBrains Mono', monospace; /* Professional digital font */
-  font-size: 1.6rem; color: var(--laser);
-  text-shadow: 0 0 12px var(--laser-glow);
-  margin-top: 4px;
-  font-weight: 700;
-}
-.meter-value .unit {
-  font-size: 0.8rem; color: var(--text-muted); margin-left: 6px; text-shadow: none; font-weight: 400;
-}
+.meter-label { font-size: 10px; letter-spacing: 0.15em; color: var(--text-muted); text-transform: uppercase; font-weight: 500; }
+.meter-value { font-family: 'JetBrains Mono', monospace; font-size: 1.6rem; color: var(--laser); text-shadow: 0 0 12px var(--laser-glow); margin-top: 4px; font-weight: 700; }
+.meter-value .unit { font-size: 0.8rem; color: var(--text-muted); margin-left: 6px; font-weight: 400; text-shadow: none; }
 
-/* ===== Buttons ===== */
 .btn-primary {
-  background: linear-gradient(135deg, #06b6d4, #0284c7);
-  color: #ffffff; font-weight: 500;
-  padding: 10px 18px; border-radius: 8px;
-  border: none;
-  box-shadow: 0 4px 14px rgba(6, 182, 212, 0.25);
-  transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
-  cursor: pointer;
+  background: linear-gradient(135deg, #06b6d4, #0284c7); color: #ffffff; font-weight: 500;
+  padding: 10px 18px; border-radius: 8px; box-shadow: 0 4px 14px rgba(6, 182, 212, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.2s ease; cursor: pointer; border: none;
 }
-.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4); filter: brightness(1.1); }
-.btn-primary:active { transform: translateY(0); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4); }
+.btn-ghost {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); color: #cbd5e1;
+  padding: 10px 18px; border-radius: 8px; transition: background 0.2s ease; cursor: pointer;
+}
+.btn-ghost:hover { background: rgba(255,255,255,0.08); }
 
-/* ===== Table rows ===== */
 #dataTable tr { transition: background 0.2s ease; border-bottom: 1px solid rgba(255,255,255,0.05); }
 #dataTable tr:hover { background: rgba(6, 182, 212, 0.08); }
 #dataTable td { padding: 10px 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #cbd5e1; }
 #dataTable .empty { padding: 18px; text-align: center; color: #64748b; font-family: 'Inter', sans-serif; }
-
-/* Row entry animation */
-@keyframes rowIn {
-  from { opacity: 0; transform: translateY(-4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+@keyframes rowIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 .row-in { animation: rowIn 0.35s ease; }
