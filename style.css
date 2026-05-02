@@ -1,25 +1,32 @@
 :root {
-  --bg-0: #07090f;
-  --bg-1: #0c1018;
-  --glass-bg: rgba(255, 255, 255, 0.04);
+  /* Deep slate professional background */
+  --bg-0: #0f172a; 
+  --bg-1: #020617; 
+  --glass-bg: rgba(30, 41, 59, 0.4);
   --glass-border: rgba(255, 255, 255, 0.08);
-  --amber: #fcd34d;
-  --amber-glow: rgba(252, 211, 77, 0.65);
+  /* Scientific Cyan for the laser and UI accents */
+  --laser: #06b6d4; 
+  --laser-glow: rgba(6, 182, 212, 0.5);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
 }
 
 html, body {
-  background: radial-gradient(1200px 600px at 80% -10%, #1a1430 0%, transparent 60%),
-              radial-gradient(900px 500px at -10% 20%, #0a1a2a 0%, transparent 55%),
+  font-family: 'Inter', sans-serif;
+  color: var(--text-main);
+  background: radial-gradient(1200px 600px at 80% -10%, #1e293b 0%, transparent 60%),
+              radial-gradient(900px 500px at -10% 20%, #0f172a 0%, transparent 55%),
               linear-gradient(180deg, var(--bg-0), var(--bg-1));
   background-attachment: fixed;
 }
 
+/* Subtle, professional deep-blue aurora */
 .bg-aurora {
   position: fixed; inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(600px 300px at 20% 90%, rgba(99,102,241,0.08), transparent 70%),
-    radial-gradient(600px 300px at 90% 10%, rgba(236,72,153,0.06), transparent 70%);
+    radial-gradient(600px 300px at 20% 90%, rgba(14, 165, 233, 0.05), transparent 70%),
+    radial-gradient(600px 300px at 90% 10%, rgba(99, 102, 241, 0.04), transparent 70%);
   z-index: -1;
 }
 
@@ -27,15 +34,15 @@ html, body {
 .glass {
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
-  box-shadow: 0 10px 40px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04);
+  backdrop-filter: blur(16px) saturate(120%);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  box-shadow: 0 10px 40px -20px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.03);
 }
 
 /* ===== Optical bench ===== */
 .stage {
   height: 240px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.25));
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.4));
   border: 1px solid rgba(255,255,255,0.05);
   border-radius: 1rem;
   overflow: hidden;
@@ -46,19 +53,19 @@ html, body {
   z-index: 2;
 }
 .left-2 { left: 18px; } .right-2 { right: 18px; }
-.label { font-size: 10px; letter-spacing: 0.2em; color: #94a3b8; text-transform: uppercase; }
+.label { font-size: 10px; letter-spacing: 0.15em; color: var(--text-muted); text-transform: uppercase; font-weight: 500; }
 
 .lamp {
   width: 36px; height: 36px; border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, #fff7d6, #fbbf24 60%, #92400e);
-  box-shadow: 0 0 30px 6px rgba(251,191,36,0.55);
+  background: radial-gradient(circle at 30% 30%, #cffafe, var(--laser) 60%, #0891b2);
+  box-shadow: 0 0 30px 6px var(--laser-glow);
 }
 
 .detector {
   width: 38px; height: 50px; border-radius: 6px;
-  background: linear-gradient(180deg, #1f2937, #0b1220);
+  background: linear-gradient(180deg, #1e293b, #0f172a);
   border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: inset 0 0 12px rgba(252,211,77,0.0);
+  box-shadow: inset 0 0 12px rgba(6, 182, 212, 0.0);
   transition: box-shadow 0.4s ease, background 0.4s ease;
 }
 
@@ -70,51 +77,40 @@ html, body {
   padding: 0 60px;
 }
 
-/* The continuous beam */
+/* The continuous laser beam */
 .beam {
   position: absolute; left: 8%; right: 8%; top: 50%;
-  height: 14px; transform: translateY(-50%);
+  height: 12px; transform: translateY(-50%);
   background: linear-gradient(90deg,
-    rgba(252,211,77,0.0) 0%,
-    rgba(252,211,77,0.85) 15%,
-    rgba(252,211,77,0.95) 50%,
-    rgba(252,211,77,0.85) 85%,
-    rgba(252,211,77,0.0) 100%);
+    transparent 0%,
+    rgba(6, 182, 212, 0.8) 15%,
+    var(--laser) 50%,
+    rgba(6, 182, 212, 0.8) 85%,
+    transparent 100%);
   filter: blur(2px);
   border-radius: 999px;
   opacity: 1;
   transition: opacity 0.5s ease, filter 0.5s ease;
 }
 
-/* A glowing orb that travels — purely decorative pulse */
-.light-orb {
-  position: absolute; top: 50%; left: 50%;
-  width: 26px; height: 26px; border-radius: 50%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, #fff7d6 0%, #fcd34d 50%, transparent 75%);
-  box-shadow: 0 0 40px 12px var(--amber-glow);
-  opacity: 1;
-  transition: opacity 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease;
-}
-
 .polarizer, .analyzer {
   position: relative; z-index: 2;
   width: 60px; height: 130px;
   border-radius: 8px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-  border: 1px solid rgba(255,255,255,0.12);
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.15);
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
 }
 .plabel {
   position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%);
-  font-size: 10px; letter-spacing: 0.2em; color: #94a3b8; text-transform: uppercase;
+  font-size: 10px; letter-spacing: 0.15em; color: var(--text-muted); text-transform: uppercase;
 }
 .grating {
   width: 80%; height: 80%; border-radius: 4px;
   background-image: repeating-linear-gradient(
     0deg,
-    rgba(252,211,77,0.85) 0 2px,
+    rgba(6, 182, 212, 0.7) 0 2px,
     transparent 2px 6px
   );
   opacity: 0.85;
@@ -128,69 +124,59 @@ html, body {
 .malus-slider {
   -webkit-appearance: none; appearance: none;
   height: 6px; border-radius: 999px;
-  background: linear-gradient(90deg, #fcd34d, #6366f1);
+  background: linear-gradient(90deg, var(--laser), #3b82f6);
   outline: none;
 }
 .malus-slider::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none;
   width: 20px; height: 20px; border-radius: 50%;
-  background: #0b1220;
-  border: 2px solid #fcd34d;
-  box-shadow: 0 0 0 4px rgba(252,211,77,0.15), 0 0 14px rgba(252,211,77,0.5);
+  background: #0f172a;
+  border: 2px solid var(--laser);
+  box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.15), 0 0 14px var(--laser-glow);
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
 .malus-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
-.malus-slider::-moz-range-thumb {
-  width: 20px; height: 20px; border-radius: 50%;
-  background: #0b1220; border: 2px solid #fcd34d;
-  box-shadow: 0 0 14px rgba(252,211,77,0.6); cursor: pointer;
-}
 
 /* ===== Meters ===== */
 .meter {
   border: 1px solid rgba(255,255,255,0.08);
-  background: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0.15));
+  background: linear-gradient(180deg, rgba(0,0,0,0.5), rgba(0,0,0,0.2));
   border-radius: 12px; padding: 14px;
-  box-shadow: inset 0 0 20px rgba(252,211,77,0.05);
+  box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.03);
 }
 .meter-label {
-  font-size: 10px; letter-spacing: 0.25em; color: #94a3b8; text-transform: uppercase;
+  font-size: 10px; letter-spacing: 0.15em; color: var(--text-muted); text-transform: uppercase; font-weight: 500;
 }
 .meter-value {
-  font-family: 'Orbitron', monospace;
-  font-size: 1.6rem; color: #fcd34d;
-  text-shadow: 0 0 14px rgba(252,211,77,0.45);
+  font-family: 'JetBrains Mono', monospace; /* Professional digital font */
+  font-size: 1.6rem; color: var(--laser);
+  text-shadow: 0 0 12px var(--laser-glow);
   margin-top: 4px;
+  font-weight: 700;
 }
 .meter-value .unit {
-  font-size: 0.8rem; color: #94a3b8; margin-left: 6px; text-shadow: none;
+  font-size: 0.8rem; color: var(--text-muted); margin-left: 6px; text-shadow: none; font-weight: 400;
 }
 
 /* ===== Buttons ===== */
 .btn-primary {
-  background: linear-gradient(135deg, #fcd34d, #f59e0b);
-  color: #0b1220; font-weight: 600;
-  padding: 10px 18px; border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(252,211,77,0.25);
+  background: linear-gradient(135deg, #06b6d4, #0284c7);
+  color: #ffffff; font-weight: 500;
+  padding: 10px 18px; border-radius: 8px;
+  border: none;
+  box-shadow: 0 4px 14px rgba(6, 182, 212, 0.25);
   transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  cursor: pointer;
 }
-.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(252,211,77,0.4); filter: brightness(1.05); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4); filter: brightness(1.1); }
 .btn-primary:active { transform: translateY(0); }
 
-.btn-ghost {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: #cbd5e1; padding: 10px 18px; border-radius: 10px;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-.btn-ghost:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); }
-
 /* ===== Table rows ===== */
-#dataTable tr { transition: background 0.2s ease; }
-#dataTable tr:hover { background: rgba(252,211,77,0.05); }
-#dataTable td { padding: 8px 12px; font-family: 'Orbitron', monospace; font-size: 0.85rem; color: #e2e8f0; }
-#dataTable .empty { padding: 18px; text-align: center; color: #64748b; font-family: Inter, sans-serif; }
+#dataTable tr { transition: background 0.2s ease; border-bottom: 1px solid rgba(255,255,255,0.05); }
+#dataTable tr:hover { background: rgba(6, 182, 212, 0.08); }
+#dataTable td { padding: 10px 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #cbd5e1; }
+#dataTable .empty { padding: 18px; text-align: center; color: #64748b; font-family: 'Inter', sans-serif; }
 
 /* Row entry animation */
 @keyframes rowIn {
