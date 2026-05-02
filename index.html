@@ -13,25 +13,74 @@
   <!-- Link to external CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body class="min-h-screen text-slate-100 font-[Inter]">
+<body class="min-h-screen text-slate-100 font-[Inter] flex flex-col">
 
+  <!-- Background ambience -->
   <div class="bg-aurora"></div>
 
-  <header class="max-w-7xl mx-auto px-6 pt-10 pb-6">
+  <!-- ========================================= -->
+  <!-- 1. GLOBAL NAVIGATION BAR                  -->
+  <!-- ========================================= -->
+  <nav class="sticky top-0 z-50 glass border-b border-white/10 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      
+      <!-- Logo Area -->
+      <div class="flex items-center gap-3 cursor-pointer">
+        <div class="w-8 h-8 rounded bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center font-bold text-slate-900 shadow-lg shadow-cyan-500/20">
+          VL
+        </div>
+        <span class="font-bold text-xl tracking-wide text-slate-100">VirtuLab<span class="text-cyan-400 font-light">.edu</span></span>
+      </div>
+
+      <!-- Center Links (Hidden on small screens) -->
+      <div class="hidden md:flex gap-8 text-sm font-medium text-slate-300">
+        <a href="#" class="hover:text-cyan-400 transition">Dashboard</a>
+        <a href="#" class="text-cyan-400 border-b-2 border-cyan-400 pb-1">Experiments</a>
+        <a href="#" class="hover:text-cyan-400 transition">My Classes</a>
+        <a href="#" class="hover:text-cyan-400 transition">Support</a>
+      </div>
+
+      <!-- User Profile Placeholder -->
+      <div class="flex items-center gap-4">
+        <button class="text-slate-400 hover:text-cyan-400 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+        </button>
+        <div class="w-8 h-8 rounded-full bg-slate-700 border border-slate-500 cursor-pointer flex items-center justify-center text-xs font-bold text-slate-300">
+          KB
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ========================================= -->
+  <!-- 2. BREADCRUMBS & PAGE HEADER              -->
+  <!-- ========================================= -->
+  <div class="max-w-7xl mx-auto px-6 pt-6 w-full text-xs text-slate-500 font-medium">
+    <a href="#" class="hover:text-cyan-400 transition">Home</a> <span class="mx-2">/</span>
+    <a href="#" class="hover:text-cyan-400 transition">Physics Dept</a> <span class="mx-2">/</span>
+    <a href="#" class="hover:text-cyan-400 transition">Optics Module</a> <span class="mx-2">/</span>
+    <span class="text-slate-300">Malus' Law</span>
+  </div>
+
+  <header class="max-w-7xl mx-auto px-6 pt-6 pb-6 w-full">
     <div class="flex items-center gap-3">
       <span class="h-2.5 w-2.5 rounded-full bg-cyan-400 shadow-[0_0_12px_4px_rgba(6,182,212,0.7)]"></span>
-      <p class="uppercase tracking-[0.35em] text-xs text-slate-400">Virtual Physics Lab</p>
+      <p class="uppercase tracking-[0.35em] text-xs text-slate-400">Experiment 04</p>
     </div>
     <h1 class="mt-3 text-3xl md:text-4xl font-bold tracking-tight">
       Verification of <span class="text-cyan-400">Cosine² Law of Malus</span>
     </h1>
     <p class="mt-2 text-slate-400 max-w-2xl text-sm md:text-base">
       Adjust the analyzer angle θ between the polarizer and analyzer. Observe how the transmitted light intensity follows
-      <span class="font-mono text-cyan-200">I = I<sub>m</sub> cos²θ</span>.
+      <span class="font-mono text-cyan-200 bg-cyan-900/30 px-1 rounded">I = I<sub>m</sub> cos²θ</span>.
     </p>
   </header>
 
-  <main class="max-w-7xl mx-auto px-6 pb-16 grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <!-- ========================================= -->
+  <!-- 3. MAIN APP CONTENT (Your Lab)            -->
+  <!-- ========================================= -->
+  <main class="max-w-7xl mx-auto px-6 pb-16 grid grid-cols-1 lg:grid-cols-2 gap-6 w-full flex-grow">
 
     <!-- LEFT COLUMN -->
     <div class="flex flex-col gap-6">
@@ -40,7 +89,10 @@
       <section class="glass rounded-2xl p-6 md:p-8 flex flex-col">
         <div class="flex items-center justify-between">
           <h2 class="text-lg font-semibold tracking-wide">Optical Bench</h2>
-          <span class="text-xs text-slate-400 uppercase tracking-widest">Live Simulation</span>
+          <span class="text-xs text-slate-400 uppercase tracking-widest flex items-center gap-2">
+            <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span></span>
+            Live
+          </span>
         </div>
 
         <div class="stage relative mt-6 flex items-center justify-center">
@@ -60,8 +112,6 @@
 
         <!-- Sliders -->
         <div class="mt-8 flex flex-col gap-6">
-          
-          <!-- Max Intensity Slider -->
           <div>
             <div class="flex items-baseline justify-between mb-3">
               <label for="intensity" class="text-sm text-slate-300">Max Intensity (I<sub>m</sub>)</label>
@@ -70,7 +120,6 @@
             <input id="intensity" type="range" min="10" max="200" step="10" value="100" class="malus-slider w-full" />
           </div>
 
-          <!-- Angle Slider -->
           <div>
             <div class="flex items-baseline justify-between mb-3">
               <label for="angle" class="text-sm text-slate-300">Analyzer Angle θ</label>
@@ -82,7 +131,6 @@
               <span>50°</span><span>60°</span><span>70°</span><span>80°</span><span>90°</span>
             </div>
           </div>
-          
         </div>
       </section>
 
@@ -90,7 +138,7 @@
       <div class="glass rounded-2xl p-6">
         <div class="flex items-center justify-between mb-3">
           <h2 class="text-lg font-semibold tracking-wide">Observation Table</h2>
-          <span class="text-xs text-slate-400" id="rowCount">0 readings</span>
+          <span class="text-xs text-slate-400 bg-white/5 px-2 py-1 rounded" id="rowCount">0 readings</span>
         </div>
         <div class="overflow-x-auto rounded-lg border border-white/5">
           <table class="w-full text-sm">
@@ -118,14 +166,20 @@
           <div class="meter"><p class="meter-label">Current I</p><p class="meter-value"><span id="meterCurrent">100.00</span><span class="unit">μA</span></p></div>
         </div>
         <div class="mt-5 flex flex-wrap gap-3">
-          <button id="recordBtn" class="btn-primary">⏺ Record Reading</button>
-          <button id="resetBtn" class="btn-ghost">Reset Data</button>
+          <button id="recordBtn" class="btn-primary flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+            Record Reading
+          </button>
+          <button id="resetBtn" class="btn-ghost flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+            Reset Data
+          </button>
         </div>
       </div>
 
-      <div class="glass rounded-2xl p-6 flex-grow">
+      <div class="glass rounded-2xl p-6 flex-grow flex flex-col">
         <h2 class="text-lg font-semibold tracking-wide mb-3">I vs cos²θ</h2>
-        <div class="relative h-72">
+        <div class="relative flex-grow min-h-[300px]">
           <canvas id="malusChart"></canvas>
         </div>
       </div>
@@ -133,7 +187,39 @@
     </div>
   </main>
 
-  <footer class="text-center text-xs text-slate-500 pb-8">Designed for dark-room experimentation</footer>
+  <!-- ========================================= -->
+  <!-- 4. APP FOOTER                             -->
+  <!-- ========================================= -->
+  <footer class="glass border-t border-white/10 mt-auto">
+    <div class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-slate-400">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-6 h-6 rounded bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center font-bold text-slate-900 text-xs">VL</div>
+          <span class="font-bold text-slate-100">VirtuLab<span class="text-cyan-400">.edu</span></span>
+        </div>
+        <p>Providing high-fidelity virtual physics environments for engineering students worldwide.</p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-slate-200 mb-4 uppercase tracking-wider text-xs">Resources</h3>
+        <ul class="space-y-2">
+          <li><a href="#" class="hover:text-cyan-400 transition">Lab Manual PDF</a></li>
+          <li><a href="#" class="hover:text-cyan-400 transition">Theory & Formulas</a></li>
+          <li><a href="#" class="hover:text-cyan-400 transition">Report an Issue</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-semibold text-slate-200 mb-4 uppercase tracking-wider text-xs">Experiment Details</h3>
+        <ul class="space-y-2">
+          <li><strong>Module:</strong> Optics & Photonics</li>
+          <li><strong>Course:</strong> Physics 101</li>
+          <li><strong>Environment:</strong> Dark Room Simulation</li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/5 py-4 text-center text-xs text-slate-500">
+      &copy; 2026 VirtuLab Education Systems. All rights reserved. | Developed at PES MCOE Pune. 
+    </div>
+  </footer>
 
   <!-- Link to external JS -->
   <script src="script.js"></script>
