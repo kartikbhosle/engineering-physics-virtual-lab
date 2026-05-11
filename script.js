@@ -1,3 +1,7 @@
+// =====================================================================
+// SECTION 1: WHOLE SITE LOGIC (SPA ROUTING & NAVIGATION)
+// =====================================================================
+
 // ==========================================
 // SPA ROUTING (Page Navigation)
 // ==========================================
@@ -6,7 +10,7 @@ function switchView(targetViewId) {
     document.querySelectorAll('.page-view').forEach(view => {
         view.classList.add('hidden');
     });
-    
+
     // Show the target view
     document.getElementById(targetViewId).classList.remove('hidden');
 
@@ -22,6 +26,7 @@ function switchView(targetViewId) {
             link.classList.remove('text-cyan-400', 'border-b-2', 'border-cyan-400', 'pb-1');
             link.classList.add('text-slate-300');
         }
+    
     });
 }
 
@@ -38,7 +43,14 @@ document.addEventListener('DOMContentLoaded', () => {
         switchView('view-dashboard');
     }
 
-    /* ===== DOM Elements for Malus Lab ===== */
+
+// =====================================================================
+// SECTION 2: MALUS LAB LOGIC
+// (When friends submit new labs, paste their isolated functions BELOW this entire section)
+// =====================================================================
+
+    /* ===== DOM 
+Elements for Malus Lab ===== */
     const intensityEl = document.getElementById('intensity');
     const intensityLabel = document.getElementById('intensityLabel');
     const angleEl     = document.getElementById('angle');
@@ -56,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const rowCount    = document.getElementById('rowCount');
 
     let readings = [];
-
     function getMaxIntensity() {
       return parseInt(intensityEl.value, 10);
     }
@@ -70,22 +81,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateUI() {
-      if (!angleEl || !intensityEl) return; 
-
+      if (!angleEl || !intensityEl) return;
       const currentIm = getMaxIntensity();
       const theta = parseInt(angleEl.value, 10);
       const { cos2, I } = compute(theta, currentIm);
-
       intensityLabel.innerHTML = `${currentIm} &mu;A`;
       angleLabel.textContent = `${theta}°`;
       meterAngle.textContent = `${theta}°`;
       meterCos.textContent   = cos2.toFixed(3);
       meterCurr.textContent  = I.toFixed(2);
-
       const visualIntensity = cos2; 
       beamEl.style.opacity = visualIntensity.toFixed(3);
       orbEl.style.opacity  = visualIntensity.toFixed(3);
-      
       orbEl.style.boxShadow = `0 0 ${20 + 40 * visualIntensity}px ${6 + 10 * visualIntensity}px rgba(6, 182, 212, ${0.25 + 0.6 * visualIntensity})`;
       analyzerGr.style.transform = `rotate(${theta}deg)`;
       detectorEl.style.boxShadow = `inset 0 0 ${4 + 18 * visualIntensity}px rgba(6, 182, 212, ${0.15 + 0.7 * visualIntensity})`;
@@ -118,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
             label: 'Theoretical I = Iₘ·cos²θ',
             data: [], 
             showLine: true,
+           
             borderColor: 'rgba(99, 102, 241, 0.7)', 
             backgroundColor: 'rgba(99, 102, 241, 0.0)',
             borderWidth: 2,
@@ -126,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tension: 0.25,
           },
           {
+     
             label: 'Recorded Readings',
             data: [],
             showLine: true,
@@ -133,6 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
             backgroundColor: 'rgba(6, 182, 212, 1)',
             pointBackgroundColor: '#06b6d4',
             pointBorderColor: '#0f172a',
+      
             pointBorderWidth: 2,
             pointRadius: 5,
             pointHoverRadius: 7,
@@ -143,31 +153,34 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       options: {
         responsive: true,
+ 
         maintainAspectRatio: false,
         animation: { duration: 700, easing: 'easeOutCubic' },
         plugins: {
           legend: { labels: { color: '#cbd5e1', font: { family: 'Inter', size: 12 } } },
           tooltip: {
             backgroundColor: 'rgba(15, 23, 42, 0.95)', borderColor: 'rgba(6, 182, 212, 0.5)',
-            borderWidth: 1, titleColor: '#06b6d4', bodyColor: '#f8fafc', padding: 12, cornerRadius: 8,
+            borderWidth: 
+1, titleColor: '#06b6d4', bodyColor: '#f8fafc', padding: 12, cornerRadius: 8,
             callbacks: { label: (ctx) => `cos²θ = ${ctx.parsed.x.toFixed(3)}, I = ${ctx.parsed.y.toFixed(2)} μA` }
           }
         },
         scales: {
           x: {
             type: 'linear', min: 0, max: 1.1,
-            title: { display: true, text: 'cos²θ', color: '#94a3b8', font: { size: 12 } },
+            title: 
+{ display: true, text: 'cos²θ', color: '#94a3b8', font: { size: 12 } },
             ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255, 255, 255, 0.06)' }
           },
           y: {
             min: 0, suggestedMax: 110,
             title: { display: true, text: 'Current I (μA)', color: '#94a3b8', font: { size: 12 } },
+ 
             ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255, 255, 255, 0.06)' }
           }
         }
       }
     });
-
     function updateTheoreticalLine() {
       const currentIm = getMaxIntensity();
       const theoreticalLine = Array.from({ length: 21 }, (_, i) => {
@@ -186,7 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     angleEl.addEventListener('input', updateUI);
-
     intensityEl.addEventListener('input', () => {
       updateUI();
       updateTheoreticalLine();
@@ -196,6 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
              readings = [];
              renderTable();
              refreshChart();
+       
          } else {
              readings = [];
              renderTable();
@@ -203,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
          }
       }
     });
-
     recordBtn.addEventListener('click', () => {
       const theta = parseInt(angleEl.value, 10);
       const currentIm = getMaxIntensity();
@@ -215,12 +227,12 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
       }
       
-      readings.push(r);
+   
+       readings.push(r);
       readings.sort((a, b) => a.theta - b.theta); 
       renderTable();
       refreshChart();
     });
-
     resetBtn.addEventListener('click', () => {
       if(confirm("Clear all recorded data?")) {
         readings = [];
@@ -228,7 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
         refreshChart();
       }
     });
-
     updateUI();
     updateTheoreticalLine();
     renderTable();
