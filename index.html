@@ -228,14 +228,14 @@
           </div>
 
           <!-- Experiment 08 -->
-          <div class="glass rounded-2xl p-6 border border-white/5 opacity-60">
+          <div class="glass rounded-2xl p-6 border border-cyan-500/30 hover:border-cyan-400 transition group cursor-pointer" onclick="switchView('view-lab-solar')">
             <div class="flex justify-between items-start mb-4">
               <span class="bg-slate-500/20 text-slate-400 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Semiconductors</span>
               <span class="text-slate-500 text-sm font-mono">Exp 08</span>
             </div>
             <h3 class="text-xl font-bold text-slate-300 mb-2">Solar Cell Characteristics</h3>
             <p class="text-slate-500 text-sm mb-6 line-clamp-2">Study I-V characteristics and determine the fill factor of a given Solar-cell.</p>
-            <button class="w-full bg-slate-800 text-slate-500 py-2 rounded-lg text-sm cursor-not-allowed">Coming Soon</button>
+            <button class="w-full btn-primary py-2 text-sm">Launch Lab</button>
           </div>
 
           <!-- Experiment 09 -->
@@ -396,6 +396,220 @@
         </div>
       </div>
     </div>
+
+<!-- Malus Law Lab ENds here -->
+    <!-- VIEW 5: SOLAR CELL LAB                  -->
+    <!-- --------------------------------------- -->
+    <div id="view-lab-solar" class="page-view hidden">
+      
+      <!-- Breadcrumbs -->
+      <div class="max-w-7xl mx-auto px-6 pt-6 w-full text-xs text-slate-500 font-medium">
+        <button id="solar-nav-back" class="hover:text-cyan-400 transition">Experiments</button> <span class="mx-2">/</span>
+        <span class="text-slate-300">Semiconductors</span>
+      </div>
+
+      <!-- Header -->
+      <header class="max-w-7xl mx-auto px-6 pt-4 pb-6 w-full">
+        <div class="flex items-center gap-3">
+          <span class="h-2.5 w-2.5 rounded-full bg-cyan-400 shadow-[0_0_12px_4px_rgba(6,182,212,0.7)]"></span>
+          <p class="uppercase tracking-[0.35em] text-xs text-slate-400">Experiment 08</p>
+        </div>
+        <h1 class="mt-3 text-3xl md:text-4xl font-bold tracking-tight">
+          Solar Cell <span class="text-cyan-400">I-V Characteristics</span>
+        </h1>
+        <p class="mt-2 text-slate-400 max-w-2xl text-sm md:text-base">
+          Vary the load resistance and illumination to trace the current-voltage (I-V) curve. Identify V<sub>oc</sub>, I<sub>sc</sub>, and the maximum power point to compute the Fill Factor (FF).
+        </p>
+      </header>
+
+      <!-- Main Layout -->
+      <div class="max-w-7xl mx-auto px-6 pb-16 grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+        
+        <!-- LEFT COLUMN (Bench & Controls) -->
+        <div class="lg:col-span-7 flex flex-col gap-6">
+          
+          <!-- Simulator Bench -->
+          <section class="glass rounded-2xl p-6 md:p-8 flex flex-col relative overflow-hidden">
+            <div class="flex items-center justify-between z-10 mb-6">
+              <h2 class="text-lg font-semibold tracking-wide text-slate-100">Solar Cell Bench</h2>
+              <span class="text-xs text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                <span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span></span>
+                Live
+              </span>
+            </div>
+
+            <!-- Optical/Circuit Bench SVG -->
+            <div class="w-full bg-slate-900/50 rounded-xl border border-white/5 p-4 flex justify-center mb-6">
+              <svg id="solar-bench-svg" viewBox="0 0 680 220" class="w-full max-w-[600px] h-auto" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="solar-sunGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#ffe066" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#ff8c00" stop-opacity="0"/>
+                  </radialGradient>
+                  <radialGradient id="solar-cellGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.5"/>
+                    <stop offset="100%" stop-color="#06b6d4" stop-opacity="0"/>
+                  </radialGradient>
+                  <filter id="solar-blur"><feGaussianBlur stdDeviation="6"/></filter>
+                  <linearGradient id="solar-beamGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ffe066" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#ffe066" stop-opacity="0.05"/>
+                  </linearGradient>
+                </defs>
+
+                <!-- Light Source -->
+                <circle cx="68" cy="110" r="38" fill="url(#solar-sunGlow)" filter="url(#solar-blur)" opacity="0.7" id="solar-sunGlowCircle"/>
+                <circle cx="68" cy="110" r="24" fill="#ffe066" opacity="0.95" id="solar-sunCircle"/>
+                <text x="68" y="168" text-anchor="middle" fill="#94a3b8" font-size="10" font-family="monospace">SOURCE</text>
+
+                <!-- Beam -->
+                <line x1="95" y1="110" x2="235" y2="110" stroke="url(#solar-beamGrad)" stroke-width="10" stroke-linecap="round" id="solar-lightBeam"/>
+                
+                <!-- Solar Cell -->
+                <rect x="240" y="60" width="80" height="100" rx="6" fill="#0f172a" stroke="#1e293b" stroke-width="2"/>
+                <rect x="240" y="60" width="80" height="100" rx="6" fill="url(#solar-cellGlow)" filter="url(#solar-blur)" id="solar-cellGlowRect"/>
+                <path d="M253 60v100 M266 60v100 M279 60v100 M292 60v100 M305 60v100" stroke="#0ea5e9" stroke-width="0.8" opacity="0.5"/>
+                <path d="M240 90h80 M240 110h80 M240 130h80" stroke="#0ea5e9" stroke-width="0.8" opacity="0.5"/>
+                <rect x="240" y="60" width="80" height="8" rx="3" fill="#38bdf8" opacity="0.8"/>
+                <text x="280" y="180" text-anchor="middle" fill="#94a3b8" font-size="10" font-family="monospace">SOLAR CELL</text>
+
+                <!-- Ammeter -->
+                <circle cx="430" cy="90" r="18" fill="#1e293b" stroke="#22d3ee" stroke-width="1.5"/>
+                <text x="430" y="95" text-anchor="middle" fill="#22d3ee" font-size="13" font-family="monospace" font-weight="bold">A</text>
+
+                <!-- Voltmeter -->
+                <circle cx="430" cy="160" r="18" fill="#1e293b" stroke="#f59e0b" stroke-width="1.5"/>
+                <text x="430" y="165" text-anchor="middle" fill="#f59e0b" font-size="12" font-family="monospace" font-weight="bold">V</text>
+
+                <!-- Resistor -->
+                <rect x="550" y="82" width="52" height="16" rx="3" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+                <path d="M556 90l6-6 6 12 6-12 6 12 6-12 6 12" stroke="#94a3b8" fill="none" stroke-width="1"/>
+                <!-- Variable Wiper -->
+                <line x1="576" y1="76" x2="576" y2="60" stroke="#cbd5e1" stroke-width="1.5" id="solar-resistor-wiper"/>
+                <polygon points="576,82 572,74 580,74" fill="#cbd5e1"/>
+                <text x="576" y="115" text-anchor="middle" fill="#94a3b8" font-size="9" font-family="monospace">LOAD (R)</text>
+
+                <!-- Circuit Wires -->
+                <polyline points="320,75 448,75 448,90 550,90 602,90 630,90 630,160 448,160 320,145" fill="none" stroke="#475569" stroke-width="2"/>
+                <polyline points="550,90 530,90 530,160 550,160" fill="none" stroke="#475569" stroke-width="1.5" stroke-dasharray="4 3"/>
+                
+                <!-- Electron Flow Animation -->
+                <circle r="3" fill="#22d3ee" id="solar-current-dot1"><animateMotion dur="2s" repeatCount="indefinite" path="M320,75 L448,75 L448,90 L550,90 L602,90 L630,90 L630,160 L448,160 L320,145 Z"/></circle>
+                <circle r="3" fill="#22d3ee" opacity="0.6" id="solar-current-dot2"><animateMotion dur="2s" begin="0.66s" repeatCount="indefinite" path="M320,75 L448,75 L448,90 L550,90 L602,90 L630,90 L630,160 L448,160 L320,145 Z"/></circle>
+              </svg>
+            </div>
+
+            <!-- Parameters Sliders -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Illumination -->
+              <div>
+                <div class="flex justify-between items-baseline mb-2">
+                  <label class="text-sm text-slate-300">Illumination (G)</label>
+                  <span id="solar-illum-val" class="font-mono text-cyan-400 font-bold text-sm">1000 W/m²</span>
+                </div>
+                <input id="solar-illum-slider" type="range" min="100" max="1000" step="50" value="1000" class="w-full accent-cyan-400" />
+              </div>
+              
+              <!-- Load Resistance -->
+              <div>
+                <div class="flex justify-between items-baseline mb-2">
+                  <label class="text-sm text-slate-300">Load Resistance (R)</label>
+                  <span id="solar-r-val" class="font-mono text-cyan-400 font-bold text-sm">Open</span>
+                </div>
+                <input id="solar-r-slider" type="range" min="0" max="100" step="1" value="100" class="w-full accent-cyan-400" />
+              </div>
+
+              <!-- Temperature -->
+              <div class="md:col-span-2">
+                <div class="flex justify-between items-baseline mb-2">
+                  <label class="text-sm text-slate-300">Temperature (T)</label>
+                  <span id="solar-temp-val" class="font-mono text-emerald-400 font-bold text-sm">25 °C</span>
+                </div>
+                <input id="solar-temp-slider" type="range" min="10" max="70" step="5" value="25" class="w-full accent-emerald-400" />
+              </div>
+            </div>
+          </section>
+
+          <!-- Observation Table -->
+          <div class="glass rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h2 class="text-lg font-semibold tracking-wide text-slate-100">Observation Data</h2>
+              <span class="text-xs text-slate-400 bg-white/5 px-2 py-1 rounded" id="solar-reading-count">0 readings</span>
+            </div>
+            <div class="overflow-x-auto rounded-lg border border-white/5 max-h-[250px] overflow-y-auto">
+              <table class="w-full text-sm text-left">
+                <thead class="bg-slate-800/80 text-slate-300 uppercase text-xs tracking-wider sticky top-0">
+                  <tr>
+                    <th class="py-3 px-4">#</th>
+                    <th class="py-3 px-4">R (Ω)</th>
+                    <th class="py-3 px-4">V (V)</th>
+                    <th class="py-3 px-4">I (mA)</th>
+                    <th class="py-3 px-4">P (mW)</th>
+                  </tr>
+                </thead>
+                <tbody id="solar-table-body" class="divide-y divide-white/5 bg-slate-900/30">
+                  <tr><td colspan="5" class="py-4 text-center text-slate-500 italic">Adjust variables and click Record.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN (Readouts & Charts) -->
+        <div class="lg:col-span-5 flex flex-col gap-6">
+          
+          <!-- Digital Readouts -->
+          <div class="glass rounded-2xl p-6">
+            <h2 class="text-lg font-semibold tracking-wide mb-4 text-slate-100">Multimeter Readings</h2>
+            <div class="grid grid-cols-2 gap-4 mb-5">
+              <div class="bg-slate-900/60 border border-slate-700/50 p-4 rounded-xl text-center">
+                <p class="text-xs font-bold text-f59e0b uppercase tracking-widest mb-1 text-amber-500">Voltage</p>
+                <p class="text-2xl font-mono text-amber-400"><span id="solar-volt-read">0.00</span> <span class="text-sm">V</span></p>
+              </div>
+              <div class="bg-slate-900/60 border border-slate-700/50 p-4 rounded-xl text-center">
+                <p class="text-xs font-bold uppercase tracking-widest mb-1 text-cyan-400">Current</p>
+                <p class="text-2xl font-mono text-cyan-300"><span id="solar-curr-read">0.00</span> <span class="text-sm">mA</span></p>
+              </div>
+            </div>
+            
+            <div class="bg-slate-900/60 border border-slate-700/50 p-4 rounded-xl text-center mb-6 flex justify-between items-center px-6">
+              <span class="text-sm font-bold uppercase tracking-widest text-emerald-400">Power Output</span>
+              <span class="text-2xl font-mono text-emerald-300"><span id="solar-pow-read">0.00</span> <span class="text-sm">mW</span></span>
+            </div>
+
+            <div class="flex flex-wrap gap-3">
+              <button id="solar-record-btn" class="btn-primary flex-1 flex justify-center items-center gap-2 py-3 text-sm">
+                Record Reading
+              </button>
+              <button id="solar-reset-btn" class="btn-ghost flex justify-center items-center gap-2 px-4 py-3 text-sm">
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <!-- Chart Area -->
+          <div class="glass rounded-2xl p-6 flex-grow flex flex-col">
+            <div class="flex justify-between items-start mb-4">
+              <h2 class="text-lg font-semibold tracking-wide text-slate-100">Characteristic Curves</h2>
+            </div>
+            <!-- Ideal Params Box -->
+            <div class="flex justify-between text-xs font-mono text-slate-400 mb-4 bg-slate-900/50 p-2 rounded">
+              <span>V<sub>oc</sub>: <span id="solar-voc-lbl" class="text-slate-200">--</span></span>
+              <span>I<sub>sc</sub>: <span id="solar-isc-lbl" class="text-slate-200">--</span></span>
+              <span>FF: <span id="solar-ff-lbl" class="text-emerald-400 font-bold">--</span></span>
+            </div>
+            <div class="relative flex-grow min-h-[250px] w-full">
+              <canvas id="solar-iv-chart"></canvas>
+            </div>
+            <div id="solar-status-guidance" class="text-center mt-1 text-[10px] uppercase tracking-wider"></div>
+          </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- -----------------END OF SOLAR CELL---------------------- -->
 
     <!-- --------------------------------------- -->
     <!-- VIEW 4: COMING SOON                     -->
